@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+# virtual env
+venv/
+.env
+# database
+backend/database/
+# IDEs
+.vscode/
+*.sublime-project
+*.sublime-workspace
+# OS files
+.DS_Store
+Thumbs.db
+# logs
+*.log
+# compiled files
+*.pyc
+# ignore any OneDrive junk
+*.lnk

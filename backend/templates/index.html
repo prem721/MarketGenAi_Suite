@@ -1,0 +1,458 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>MarketAI Suite</title>
+    <meta name="description" content="MarketAI Suite — AI campaign generator and marketing assistant." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}" />
+</head>
+
+<body>
+    <div class="bg" aria-hidden="true">
+        <div class="bg-orb orb-1"></div>
+        <div class="bg-orb orb-2"></div>
+        <div class="bg-orb orb-3"></div>
+        <div class="bg-grid"></div>
+        <div class="bg-vignette"></div>
+    </div>
+    <div class="app-shell">
+        <aside class="sidebar" aria-label="Primary">
+            <div class="brand">
+                <div class="brand-mark" aria-hidden="true">MA</div>
+                <div class="brand-text">
+                    <div class="brand-title">MarketAI</div>
+                    <div class="brand-subtitle">Suite</div>
+                </div>
+            </div>
+
+            <nav class="nav">
+                <button class="nav-item is-active" data-route="studio" type="button">
+                    <span class="nav-icon" aria-hidden="true">⚡</span>
+                    <span class="nav-label">Campaign Studio</span>
+                </button>
+                <button class="nav-item" data-route="leads" type="button">
+                    <span class="nav-icon" aria-hidden="true">🎯</span>
+                    <span class="nav-label">Lead Scoring</span>
+                </button>
+                <button class="nav-item" data-route="competitors" type="button">
+                    <span class="nav-icon" aria-hidden="true">🏁</span>
+                    <span class="nav-label">Competitor Analysis</span>
+                </button>
+                <button class="nav-item" data-route="library" type="button">
+                    <span class="nav-icon" aria-hidden="true">📚</span>
+                    <span class="nav-label">Library</span>
+                </button>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="toggle-row">
+                    <span class="toggle-label">Theme</span>
+                    <button id="themeToggle" class="chip" type="button" aria-label="Change theme">
+                        <span class="chip-dot" aria-hidden="true"></span>
+                        <span id="themeLabel">Light</span>
+                    </button>
+                </div>
+                <a href="/logout" class="ghost-btn" style="text-decoration: none; width: 100%; text-align: center;">
+                    <span aria-hidden="true">🚪</span>
+                    <span>Logout</span>
+                </a>
+                <button id="openAssistant" class="primary-btn" type="button">
+                    <span aria-hidden="true">💬</span>
+                    <span>Open Assistant</span>
+                </button>
+                <div class="sidebar-hint">Powered by your Groq key in <span class="mono">backend/.env</span>.</div>
+            </div>
+        </aside>
+
+        <main class="main">
+            <header class="topbar">
+                <div class="topbar-title">
+                    <div class="eyebrow">Marketing Copilot</div>
+                    <h1>Campaign Studio</h1>
+                </div>
+                <div class="topbar-actions">
+                    <button id="btnQuickFill" class="ghost-btn" type="button" title="Fill with an example">
+                        <span aria-hidden="true">✨</span>
+                        <span>Quick fill</span>
+                    </button>
+                    <button id="btnClear" class="ghost-btn" type="button" title="Clear inputs">
+                        <span aria-hidden="true">🧹</span>
+                        <span>Clear</span>
+                    </button>
+                </div>
+            </header>
+
+            <section id="route-studio" class="route is-active" aria-label="Campaign studio">
+                <div class="grid">
+                    <section class="card">
+                        <div class="card-header">
+                            <h2>Input</h2>
+                            <div class="segmented" role="tablist" aria-label="Input mode">
+                                <button class="seg-btn is-active" type="button" data-mode="guided" role="tab"
+                                    aria-selected="true">
+                                    Guided
+                                </button>
+                                <button class="seg-btn" type="button" data-mode="brief" role="tab"
+                                    aria-selected="false">
+                                    Brief
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="card-body">
+                            <div id="mode-guided" class="mode is-active">
+                                <div class="field">
+                                    <label for="product">Product</label>
+                                    <input id="product" autocomplete="off" placeholder="e.g., AI resume builder" />
+                                    <div class="hint">What are you selling or promoting?</div>
+                                </div>
+
+                                <div class="field">
+                                    <label for="audience">Target audience</label>
+                                    <input id="audience" autocomplete="off"
+                                        placeholder="e.g., fresh graduates & job switchers in India" />
+                                    <div class="hint">Who should care most and why?</div>
+                                </div>
+
+                                <div class="field">
+                                    <label for="platform">Primary platform</label>
+                                    <input id="platform" autocomplete="off" placeholder="e.g., Instagram + Email" />
+                                    <div class="hint">Where will the campaign run?</div>
+                                </div>
+                            </div>
+
+                            <div id="mode-brief" class="mode">
+                                <div class="field">
+                                    <label for="description">Campaign brief</label>
+                                    <textarea id="description"
+                                        placeholder="Describe your goal, target customers, offer, tone, constraints, budget, and timeline…"
+                                        spellcheck="true"></textarea>
+                                    <div class="hint">Tip: include a differentiator and an offer to get sharper
+                                        messaging.</div>
+                                </div>
+
+                                <div class="callout">
+                                    <div class="callout-title">Pro move</div>
+                                    <div class="callout-body">
+                                        Add specifics like “₹ budget”, timeline, and examples of competitors. The output
+                                        becomes much more
+                                        usable.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card-footer">
+                            <div class="format-row">
+                                <div class="format-title">Output style</div>
+                                <div class="radios" role="radiogroup" aria-label="Campaign format">
+                                    <label class="radio">
+                                        <input type="radio" name="campaignFormat" value="flexible" checked />
+                                        <span>Flexible</span>
+                                    </label>
+                                    <label class="radio">
+                                        <input type="radio" name="campaignFormat" value="structured" />
+                                        <span>Structured (10 sections)</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="btn-row">
+                                <button id="btnGenerate" class="primary-btn" type="button">
+                                    <span aria-hidden="true">⚡</span>
+                                    <span>Generate</span>
+                                </button>
+                                <button id="btnDownload" class="success-btn" type="button" disabled>
+                                    <span aria-hidden="true">📥</span>
+                                    <span>Download PDF</span>
+                                </button>
+                                <button id="btnCopy" class="ghost-btn" type="button" disabled>
+                                    <span aria-hidden="true">📋</span>
+                                    <span>Copy</span>
+                                </button>
+                                <button id="btnSave" class="ghost-btn" type="button" disabled>
+                                    <span aria-hidden="true">💾</span>
+                                    <span>Save</span>
+                                </button>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="card output-card">
+                        <div class="card-header">
+                            <h2>Output</h2>
+                            <div class="meta">
+                                <span id="metaWords" class="chip chip-muted" title="Word count">0 words</span>
+                                <span id="metaStatus" class="chip chip-muted">Ready</span>
+                            </div>
+                        </div>
+
+                        <div class="card-body">
+                            <div id="outputEmpty" class="empty">
+                                <div class="empty-title">No campaign yet</div>
+                                <div class="empty-body">Generate a campaign to see a detailed plan here, then download
+                                    it as a PDF.</div>
+                            </div>
+                            <pre id="campaignOutput" class="output" aria-label="Campaign output" hidden></pre>
+                        </div>
+
+                        <div class="card-footer subtle">
+                            <div class="subtle-row">
+                                <span class="muted">Tip</span>
+                                <span class="muted">Use “Brief” for best results when you have more context.</span>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </section>
+
+
+            <section id="route-leads" class="route" aria-label="Lead scoring">
+                <div class="grid grid-single">
+                    <section class="card">
+                        <div class="card-header">
+                            <h2>Lead scoring</h2>
+                        </div>
+                        <div class="card-body">
+                            <div class="grid grid-two">
+                                <div>
+                                    <div class="field">
+                                        <label for="leadName">Name</label>
+                                        <input id="leadName" placeholder="Lead name" />
+                                    </div>
+                                    <div class="field">
+                                        <label for="leadEmail">Email</label>
+                                        <input id="leadEmail" type="email" placeholder="email@example.com" />
+                                    </div>
+                                    <div class="field">
+                                        <label for="leadCompany">Company</label>
+                                        <input id="leadCompany" placeholder="Company (optional)" />
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="lead-score-row">
+                                        <div class="lead-score-label">
+                                            Demographic fit
+                                            <span class="badge" id="badgeDemo">0</span>
+                                        </div>
+                                        <input id="scoreDemo" type="range" min="0" max="10" step="1" value="0" />
+                                    </div>
+                                    <div class="lead-score-row">
+                                        <div class="lead-score-label">
+                                            Behaviour / intent
+                                            <span class="badge" id="badgeBeh">0</span>
+                                        </div>
+                                        <input id="scoreBeh" type="range" min="0" max="10" step="1" value="0" />
+                                    </div>
+                                    <div class="lead-score-row">
+                                        <div class="lead-score-label">
+                                            Financial capacity
+                                            <span class="badge" id="badgeFin">0</span>
+                                        </div>
+                                        <input id="scoreFin" type="range" min="0" max="10" step="1" value="0" />
+                                    </div>
+                                    <div class="lead-score-row">
+                                        <div class="lead-score-label">
+                                            Engagement level
+                                            <span class="badge" id="badgeEng">0</span>
+                                        </div>
+                                        <input id="scoreEng" type="range" min="0" max="10" step="1" value="0" />
+                                    </div>
+                                    <div class="lead-score-row">
+                                        <div class="lead-score-label">
+                                            Need / problem fit
+                                            <span class="badge" id="badgeFit">0</span>
+                                        </div>
+                                        <input id="scoreFit" type="range" min="0" max="10" step="1" value="0" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="btn-row" style="margin-top: 10px;">
+                                <button id="btnScoreLead" class="primary-btn" type="button">
+                                    <span aria-hidden="true">🎯</span>
+                                    <span>Score & save lead</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <div class="lead-result">
+                                <div>
+                                    <div class="lead-result-label">Score</div>
+                                    <div id="leadScoreValue" class="lead-score-value">–</div>
+                                </div>
+                                <div>
+                                    <div class="lead-result-label">Category</div>
+                                    <div id="leadScoreCategory" class="lead-score-category">Not scored</div>
+                                </div>
+                                <div class="lead-bar-wrapper">
+                                    <div id="leadScoreBar" class="lead-bar">
+                                        <div class="lead-bar-fill"></div>
+                                    </div>
+                                    <div id="leadScoreRecommendations" class="lead-recs"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="card">
+                        <div class="card-header">
+                            <h2>Recent leads</h2>
+                        </div>
+                        <div class="card-body">
+                            <div id="leadHistoryEmpty" class="empty">
+                                <div class="empty-title">No leads scored yet</div>
+                                <div class="empty-body">Score a lead and it will show up here with the full breakdown.
+                                </div>
+                            </div>
+                            <div id="leadHistoryTableWrapper" class="table-wrapper" hidden>
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Company</th>
+                                            <th>Score</th>
+                                            <th>Category</th>
+                                            <th>When</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="leadHistoryBody"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </section>
+
+            <section id="route-competitors" class="route" aria-label="Competitor analysis">
+                <div class="grid grid-single">
+                    <section class="card">
+                        <div class="card-header">
+                            <h2>Competitor analysis</h2>
+                        </div>
+                        <div class="card-body">
+                            <div class="grid grid-two">
+                                <div>
+                                    <div class="field">
+                                        <label for="compProduct">Product</label>
+                                        <input id="compProduct" placeholder="What are you selling?" />
+                                    </div>
+                                    <div class="field">
+                                        <label for="compAudience">Target audience</label>
+                                        <input id="compAudience" placeholder="Who are you competing for?" />
+                                    </div>
+                                    <div class="field">
+                                        <label for="compRegion">Market / region</label>
+                                        <input id="compRegion" placeholder="e.g., India SaaS SMB, Global enterprise" />
+                                    </div>
+                                    <div class="field">
+                                        <label for="compPositioning">Your positioning</label>
+                                        <textarea id="compPositioning"
+                                            placeholder="How do you want MarketAI to be perceived vs competitors?"></textarea>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="field">
+                                        <label for="compList">Competitors</label>
+                                        <textarea id="compList"
+                                            placeholder="List 3–5 main competitors and any notes (pricing, strengths, weaknesses)…"></textarea>
+                                    </div>
+                                    <div class="btn-row" style="margin-top: 10px;">
+                                        <button id="btnRunCompAnalysis" class="primary-btn" type="button">
+                                            <span aria-hidden="true">🏁</span>
+                                            <span>Run analysis</span>
+                                        </button>
+                                        <button id="btnCopyCompAnalysis" class="ghost-btn" type="button" disabled>
+                                            <span aria-hidden="true">📋</span>
+                                            <span>Copy</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <div class="card-body">
+                                <div id="compAnalysisEmpty" class="empty">
+                                    <div class="empty-title">No analysis yet</div>
+                                    <div class="empty-body">Fill the form and run analysis to see a full breakdown.
+                                    </div>
+                                </div>
+                                <pre id="compAnalysisOutput" class="output" hidden></pre>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </section>
+
+            <section id="route-library" class="route" aria-label="Saved campaigns">
+                <div class="grid grid-single">
+                    <section class="card">
+                        <div class="card-header">
+                            <h2>Library</h2>
+                            <div class="topbar-actions">
+                                <button id="btnExportLibrary" class="ghost-btn" type="button">
+                                    <span aria-hidden="true">⬇️</span>
+                                    <span>Export JSON</span>
+                                </button>
+                                <button id="btnClearLibrary" class="ghost-btn" type="button">
+                                    <span aria-hidden="true">🗑️</span>
+                                    <span>Clear</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div id="libraryEmpty" class="empty">
+                                <div class="empty-title">Nothing saved</div>
+                                <div class="empty-body">Save a generated campaign and it will show up here.</div>
+                            </div>
+                            <div id="libraryList" class="library" hidden></div>
+                        </div>
+                    </section>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <div id="assistant" class="assistant" aria-hidden="true">
+        <div class="assistant-panel" role="dialog" aria-modal="true" aria-label="MarketAI Assistant">
+            <div class="assistant-header">
+                <div>
+                    <div class="assistant-title">MarketAI Assistant</div>
+                    <div class="assistant-subtitle">Ask for messaging, targeting, budget, and optimization ideas.</div>
+                </div>
+                <button id="assistantClose" class="icon-btn" type="button" aria-label="Close assistant">✕</button>
+            </div>
+            <div id="chatMessages" class="assistant-messages" aria-label="Chat messages"></div>
+            <div class="assistant-quick">
+                <button class="chip" type="button"
+                    data-quick="How can I improve my campaign strategy for better conversions?">
+                    Strategy
+                </button>
+                <button class="chip" type="button"
+                    data-quick="Give me 5 high-performing social media content ideas for my niche.">
+                    Content ideas
+                </button>
+                <button class="chip" type="button"
+                    data-quick="How should I allocate budget across channels for best ROI?">
+                    Budget
+                </button>
+                <button class="chip" type="button" data-quick="How do I define and validate my target audience?">
+                    Targeting
+                </button>
+            </div>
+            <div class="assistant-input">
+                <input id="chatInput" type="text" placeholder="Ask a marketing question…" autocomplete="off" />
+                <button id="chatSend" class="primary-btn" type="button">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="toasts" class="toasts" aria-live="polite" aria-atomic="true"></div>
+    <script defer src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+
+</html>

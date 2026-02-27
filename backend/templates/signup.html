@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Sign up • MarketAI Suite</title>
+    <meta name="description" content="Create an account for MarketAI Suite." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}" />
+    <script>
+      try {
+        const t = localStorage.getItem("marketai:theme");
+        if (t) document.documentElement.setAttribute("data-theme", JSON.parse(t));
+      } catch {}
+    </script>
+  </head>
+  <body>
+    <div class="bg" aria-hidden="true">
+      <div class="bg-orb orb-1"></div>
+      <div class="bg-orb orb-2"></div>
+      <div class="bg-orb orb-3"></div>
+      <div class="bg-grid"></div>
+      <div class="bg-vignette"></div>
+    </div>
+
+    <main class="auth-shell">
+      <section class="auth-card">
+        <div class="auth-brand">
+          <div class="brand-mark" aria-hidden="true">MA</div>
+          <div>
+            <div class="auth-title">Create your account</div>
+            <div class="auth-subtitle">Sign up to access the dashboard</div>
+          </div>
+        </div>
+
+        {% if error %}
+        <div class="auth-error" role="alert">{{ error }}</div>
+        {% endif %}
+
+        <form method="POST" class="auth-form">
+          <div class="field">
+            <label for="username">Username</label>
+            <input id="username" name="username" autocomplete="username" placeholder="Choose a username" required />
+            <div class="hint">Minimum 3 characters.</div>
+          </div>
+
+          <div class="field">
+            <label for="password">Password</label>
+            <input
+              id="password"
+              name="password"
+              type="password"
+              autocomplete="new-password"
+              placeholder="Create a password"
+              required
+            />
+            <div class="hint">Minimum 6 characters. Stored securely (hashed).</div>
+          </div>
+
+          <div class="field">
+            <label for="confirm_password">Confirm password</label>
+            <input
+              id="confirm_password"
+              name="confirm_password"
+              type="password"
+              autocomplete="new-password"
+              placeholder="Re-enter password"
+              required
+            />
+          </div>
+
+          <button class="primary-btn auth-submit" type="submit">
+            <span aria-hidden="true">✨</span>
+            <span>Create account</span>
+          </button>
+        </form>
+
+        <div class="auth-links">
+          <span class="muted">Already have an account?</span>
+          <a class="auth-link" href="/login">Login</a>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
+

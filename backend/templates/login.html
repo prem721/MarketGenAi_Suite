@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Login • MarketAI Suite</title>
+    <meta name="description" content="Login to MarketAI Suite." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}" />
+    <script>
+      try {
+        const t = localStorage.getItem("marketai:theme");
+        if (t) document.documentElement.setAttribute("data-theme", JSON.parse(t));
+      } catch {}
+    </script>
+  </head>
+  <body>
+    <div class="bg" aria-hidden="true">
+      <div class="bg-orb orb-1"></div>
+      <div class="bg-orb orb-2"></div>
+      <div class="bg-orb orb-3"></div>
+      <div class="bg-grid"></div>
+      <div class="bg-vignette"></div>
+    </div>
+
+    <main class="auth-shell">
+      <section class="auth-card">
+        <div class="auth-brand">
+          <div class="brand-mark" aria-hidden="true">MA</div>
+          <div>
+            <div class="auth-title">MarketAI Suite</div>
+            <div class="auth-subtitle">Sign in to continue</div>
+          </div>
+        </div>
+
+        {% if error %}
+        <div class="auth-error" role="alert">{{ error }}</div>
+        {% endif %}
+
+        <form method="POST" class="auth-form">
+          <div class="field">
+            <label for="username">Username</label>
+            <input id="username" name="username" autocomplete="username" placeholder="Enter username" required />
+          </div>
+
+          <div class="field">
+            <label for="password">Password</label>
+            <input
+              id="password"
+              name="password"
+              type="password"
+              autocomplete="current-password"
+              placeholder="Enter password"
+              required
+            />
+          </div>
+
+          <button class="primary-btn auth-submit" type="submit">
+            <span aria-hidden="true">🔐</span>
+            <span>Login</span>
+          </button>
+        </form>
+
+        <div class="auth-links">
+          <span class="muted">New here?</span>
+          <a class="auth-link" href="/signup">Create an account</a>
+        </div>
+
+        <div class="auth-hint">
+          Accounts created via Sign up are stored in the SQLite database (passwords are hashed).
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
+
